@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="col-xs-12">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>First name:</strong>
+      <%= @profile.first_name %>
+    </p>
+
+    <p>
+      <strong>Last name:</strong>
+      <%= @profile.last_name %>
+    </p>
+
+    <p>
+      <strong>Display name:</strong>
+      <%= @profile.display_name %>
+    </p>
+
+    <p>
+      <strong>State:</strong>
+      <%= @profile.state %>
+    </p>
+
+    <p>
+      <strong>Years of membership:</strong>
+      <%= @profile.years_of_membership %>
+    </p>
+
+    <p>
+      <strong>Photo:</strong>
+      <%= image_tag @profile.photo.url(:thumb) %>
+    </p>
+
+    <p>
+      <strong>In memoriam:</strong>
+      <%= @profile.in_memoriam %>
+    </p>
+
+    <%= link_to 'Edit', edit_profile_path(@profile) %> |
+  </div>
+</div>

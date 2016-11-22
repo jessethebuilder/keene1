@@ -1,0 +1,66 @@
+<%= form_for(profile) do |f| %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= error_explanation profile %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <%= f.label :first_name, class: 'control-label' %>
+        <%= f.text_field :first_name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="control-group">
+        <%= f.label :last_name, class: 'control-label' %>
+        <%= f.text_field :last_name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="form-group">
+        <%= f.label :display_name, class: 'control-label' %>
+        <%= f.text_field :display_name, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <%= f.label :state, class: 'control-label' %>
+        <%= f.select :state, hash_for_select(Address::STATE_HASH, selected_items: profile.state), {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="form-group">
+        <%= f.label :years_of_membership, class: 'control-label' %>
+        <%= f.number_field :years_of_membership, class: 'form-control', min: 0, max: 99 %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :in_memoriam %> in Memorium?
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= image_select f, :photo %>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

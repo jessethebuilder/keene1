@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Keene</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= render :partial => 'layouts/top_nav' %>
+    <div class="container-fluid">
+      <%= image_tag 'banner.png', width: '100%' %>
+    <%= yield %>
+  </body>
+</html>
