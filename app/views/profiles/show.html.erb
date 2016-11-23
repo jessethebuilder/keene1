@@ -40,6 +40,7 @@
       <%= @profile.in_memoriam %>
     </p>
 
-    <%= link_to 'Edit', edit_profile_path(@profile) %>
+    <%= link_to 'Edit', edit_profile_path(@profile) %> |
+    <%= link_to 'Destroy', @profile, method: :delete, data: { confirm: 'Are you sure?' } %>
   </div>
 </div>
