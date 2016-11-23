@@ -5,6 +5,11 @@ class ProfilesController < ApplicationController
   # GET /profiles.json
   def index
     @profiles = Profile.all
+
+    respond_to do |format|
+      format.html
+      format.csv{ send_data @profiles.to_csv, filename: "NADA100-Profiles-#{Time.now.to_s}.csv" }
+    end
   end
 
   # GET /profiles/1

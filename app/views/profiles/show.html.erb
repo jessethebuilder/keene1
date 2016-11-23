@@ -28,8 +28,11 @@
     </p>
 
     <p>
-      <strong>Photo:</strong>
-      <%= image_tag @profile.photo.url(:thumb) %>
+      <% if @profile.photo.url %>
+        <%= image_tag @profile.photo.url(:thumb) %>
+      <% else %>
+        <h2>NO PHOTO</h2>
+      <% end %>
     </p>
 
     <p>
@@ -37,6 +40,6 @@
       <%= @profile.in_memoriam %>
     </p>
 
-    <%= link_to 'Edit', edit_profile_path(@profile) %> |
+    <%= link_to 'Edit', edit_profile_path(@profile) %>
   </div>
 </div>
