@@ -40,7 +40,11 @@
       <%= @profile.in_memoriam %>
     </p>
 
-    <%= link_to 'Edit', edit_profile_path(@profile) %> |
-    <%= link_to 'Destroy', @profile, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <p class="show_buttons">
+      <%= link_to 'Edit', edit_profile_path(@profile), class: 'btn btn-warning' %>
+      <%= link_to 'Delete', @profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %><br><br>
+      <%= link_to "Back to Profile List", profiles_path, class: 'btn btn-default' %>
+      <%= link_to 'Add New Profile', new_profile_path, class: 'btn btn-primary' %>
+    </p>
   </div>
 </div>

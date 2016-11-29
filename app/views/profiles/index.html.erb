@@ -6,7 +6,7 @@
       <h1>Profiles</h1>
 
       <div>
-        <%= link_to 'Build CSV', profiles_path(:format => :csv), class: 'btn btn-primary' %>
+        <%= link_to 'Download as Spreadsheet', profiles_path(:format => :csv), class: 'btn btn-primary' %>
       </div>
 
       <table id="profile_table" class="table table-striped">
@@ -35,7 +35,7 @@
             <td><%= profile.in_memoriam %></td>
             <td><%= link_to 'Show', profile %></td>
             <td><%= link_to 'Edit', edit_profile_path(profile) %></td>
-            <td><%= link_to 'Destroy', profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Delete', profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
           <% end %>
         </tbody>
