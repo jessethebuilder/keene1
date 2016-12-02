@@ -9,7 +9,7 @@ class Profile < ApplicationRecord
   end
 
   def Profile.to_csv
-    attrs = %w[first_name last_name display_name state years_of_membership in_memoriam photo_url]
+    attrs = %w[first_name last_name suffix display_name state years_of_membership in_memoriam photo_url]
 
     CSV.generate(headers: :true) do |csv|
       csv << attrs.map{ |header| header.titlecase }
