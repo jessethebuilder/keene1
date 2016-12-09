@@ -65,6 +65,21 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <div class="control-label">&nbsp;</div>
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :next_gen %> Next Gen?
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-8"></div>
+  </div>
+
   <%= image_select f, :photo, :accepts_remote_url => false %>
 
   <div class="row">
