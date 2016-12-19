@@ -77,7 +77,13 @@
       </div>
     </div>
 
-    <div class="col-sm-8"></div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <%= f.label :years_for_next_gen, class: 'control-lable' %>
+        <%= f.number_field :years_for_next_gen, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col-sm-4"></div>
   </div>
 
   <%= image_select f, :photo, :accepts_remote_url => false %>
