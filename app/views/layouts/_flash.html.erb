@@ -1,0 +1,23 @@
+<% if notice || alert %>
+  <div class="container-fluid" id="flash">
+    <% if alert %>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="alert">
+            <%= alert %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if notice %>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="notice">
+            <%= notice %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

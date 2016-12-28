@@ -16,3 +16,24 @@
     }
   }
 }
+
+#flash{
+  font-size: 14pt;
+  text-align: center;
+  margin-bottom: 10px;
+
+  .notice, .alert{
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .notice{
+    color: white;
+    background-color: rgba(black, 1);
+  }
+
+  .alert{
+    background-color: rgba(red, 1);
+    color: white;
+  }
+}
