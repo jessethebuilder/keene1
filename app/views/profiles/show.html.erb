@@ -53,6 +53,11 @@
       <%= @profile.years_for_next_gen %>
     </p>
 
+    <p>
+      <strong>Next Gen President's Club:</strong>
+      <%= @profile.next_gen_presidents_club %>
+    </p>
+
     <p class="show_buttons">
       <%= link_to 'Edit', edit_profile_path(@profile), class: 'btn btn-warning' %>
       <%= link_to 'Delete', @profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %><br><br>

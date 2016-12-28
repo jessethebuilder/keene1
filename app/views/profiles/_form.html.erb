@@ -42,7 +42,7 @@
     <div class="col-sm-4">
       <div class="form-group">
         <%= f.label :state, class: 'control-label' %>
-        <%= f.select :state, hash_for_select(Address::STATE_HASH, selected_items: profile.state), {}, class: 'form-control' %>
+        <%= f.select :state, hash_for_select(@states, selected_items: profile.state), {}, class: 'form-control' %>
       </div>
     </div>
 
@@ -83,6 +83,19 @@
         <%= f.number_field :years_for_next_gen, class: 'form-control' %>
       </div>
     </div>
+    <div class="col-sm-4"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= f.check_box :next_gen_presidents_club %>
+          Next Gen President's Club?
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-4"></div>
     <div class="col-sm-4"></div>
   </div>
 

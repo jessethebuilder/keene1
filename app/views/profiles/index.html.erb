@@ -22,6 +22,7 @@
             <th>In memoriam</th>
             <th>Next Gen</th>
             <th>Year for Next Gen</th>
+            <th>Next Gen President's Club</th>
             <th colspan="3"></th>
           </tr>
         </thead>
@@ -39,6 +40,7 @@
             <td><%= profile.in_memoriam %></td>
             <td><%= profile.next_gen %></td>
             <td><%= profile.years_for_next_gen %></td>
+            <td><%= profile.next_gen_presidents_club %></td>
             <td><%= link_to 'Show', profile %></td>
             <td><%= link_to 'Edit', edit_profile_path(profile) %></td>
             <td><%= link_to 'Delete', profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>

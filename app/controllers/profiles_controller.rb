@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_states, only: [:new, :edit, :update, :create]
 
   # GET /profiles
   # GET /profiles.json
@@ -67,6 +68,12 @@ class ProfilesController < ApplicationController
   end
 
   private
+    def set_states
+      @states = Address::STATE_HASH
+      [:metro_chicago, :metro_detroit, :metro_new_york, :metro_cleveland].each do |c|
+        @states[c] = c.to_s.titlecase
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_profile
       @profile = Profile.find(params[:id])
@@ -76,7 +83,7 @@ class ProfilesController < ApplicationController
     def profile_params
       params.require(:profile).permit(:first_name, :last_name, :suffix,
                                       :display_name, :state, :years_of_membership, :in_memoriam,
-                                      :next_gen, :years_for_next_gen,
+                                      :next_gen, :years_for_next_gen, :next_gen_presidents_club,
                                       :photo, :remote_photo_url, :photo_cache)
     end
 end

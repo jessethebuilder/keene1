@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219173620) do
+ActiveRecord::Schema.define(version: 20161228230610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,11 +23,12 @@ ActiveRecord::Schema.define(version: 20161219173620) do
     t.integer  "years_of_membership"
     t.string   "photo"
     t.boolean  "in_memoriam"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "suffix"
     t.boolean  "next_gen"
     t.integer  "years_for_next_gen"
+    t.boolean  "next_gen_presidents_club"
   end
 
 end
