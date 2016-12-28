@@ -71,7 +71,7 @@ class ProfilesController < ApplicationController
     def set_states
       @states = Address::STATE_HASH
       [:metro_chicago, :metro_detroit, :metro_new_york, :metro_cleveland].each do |c|
-        @states[c] = c.to_s.titlecase
+        @states[c.to_s.titlecase] = c.to_s.titlecase
       end
     end
     # Use callbacks to share common setup or constraints between actions.
