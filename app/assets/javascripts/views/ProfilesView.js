@@ -8,7 +8,6 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     'change .filter': 'filter'
   },
   filter: function(event){
-    this.filters = {};
     // Filters based on any value in all filters.
     let filters = this.$el.find('.filter');
     let filter_array = {};
@@ -30,11 +29,13 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     let headers = this.$el.find('th');
     $(headers).each(function(i, header){
       let h = $(header);
-      let name = h.data('filter-for');
-      if(name){
-        let input = $('<input type="text" class="form-control filter" />');
-        input.prop('name', name);
-        h.append(input);
+      if(h.find('.filter').length === 0){
+        let name = h.data('filter-for');
+        if(name){
+          let input = $('<input type="text" class="form-control filter" />');
+          input.prop('name', name);
+          h.append(input);
+        }
       }
     });
   },

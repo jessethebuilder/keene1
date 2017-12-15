@@ -1,4 +1,8 @@
 Rails.application.configure do
+  ENV['AWS_REGION'] = 'us-west-2'
+  ENV['AWS_ID'] = 'AKIAIRHTWBUH453NK2PA'
+  ENV['AWS_SECRET'] = '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'
+  ENV['AWS_BUCKET'] = 'anysoft-test'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

@@ -1,6 +1,9 @@
 require 'csv'
+require "#{Rails.root}/lib/assets/s3_helper"
+require 'open-uri'
 
 class Profile < ApplicationRecord
+  include S3Helper
 
   mount_uploader :photo, PhotoUploader, dependent: :destroy
 
@@ -17,6 +20,20 @@ class Profile < ApplicationRecord
       all.each do |profile|
         csv << attrs.map{ |attr| profile.send(attr) }
       end
+    end
+  end
+
+  before_save :update_photo_path
+
+  private
+
+  def update_photo_path
+    # Based on member_id
+    if member_id_changed?
+      puts '.................'
+      puts photo.inspect
+      puts '.................'
+      # photo.recreate_versions! if photo
     end
   end
 end

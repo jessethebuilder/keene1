@@ -42,5 +42,8 @@
 </div>
 
 <script type="text/javascript">
-  Profiles.init();
+  $(document).on('turbolinks:load', function(){
+
+    Profiles.init();
+  });
 </script>

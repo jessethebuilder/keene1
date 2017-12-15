@@ -54,10 +54,12 @@ end
 
 
 # Images
-gem 'carrierwave'
-# , github: 'carrierwaveuploader/carrierwave'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'fog'
 gem 'mini_magick'
+gem 'aws-sdk'
+gem 'data_uri'
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

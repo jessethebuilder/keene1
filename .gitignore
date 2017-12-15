@@ -17,3 +17,6 @@
 .byebug_history
 
 /public/uploads
+
+/config/environments/development.rb
+/config/environments/test.rb

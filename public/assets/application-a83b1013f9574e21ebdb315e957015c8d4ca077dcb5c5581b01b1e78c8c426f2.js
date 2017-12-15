@@ -17027,7 +17027,7 @@ window.Profiles = {
           let selected = (s === state) ? ' selected' : '';
           ; __p.push('\n          <option value="',  s ,'"',  selected ,'>',  states[s] ,'</option>\n        '); 
         }
-      ; __p.push('\n  </select>\n</td>\n<td>\n  <input type="number" name="years_of_membership" value="',  years_of_membership ,'" class="form-control" />\n</td>\n<td>\n  <span class="photo">\n    ',  photo ,'\n  </span>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="in_memoriam" ',  (in_memoriam) ? 'checked' : '' ,' />\n    <small>memoriam</small>\n  </label>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen" ',  (next_gen) ? "checked" : '' ,' />\n    <small>next gen</small>\n  </label>\n</td>\n<td>\n  <input type="number" name="years_for_next_gen" class="form-control" ',  (years_for_next_gen) ? 'checked' : '' ,' />\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen_presidents_club" ',  (next_gen_presidents_club) ? 'checked' : '' ,' />\n    <small>president\'s</small>\n  </label>\n</td>\n<td>\n  <a href="/profiles/',  id ,'" class="btn btn-xs btn-primary">View</a>\n</td>\n<td>\n  <a href="/profiles/',  id ,'/edit" class="btn btn-xs btn-warning">Edit</a>\n</td>\n');}return __p.join('');};
+      ; __p.push('\n  </select>\n</td>\n<td>\n  <input type="number" name="years_of_membership" value="',  years_of_membership ,'" class="form-control" />\n</td>\n<td>\n  <span class="photo">\n    ');  if(photo){ ; __p.push('\n      ',  photo ,'\n    ');  } else { ; __p.push('\n      click to add photo\n    ');  } ; __p.push('\n  </span>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="in_memoriam" ',  (in_memoriam) ? 'checked' : '' ,' />\n    <small>memoriam</small>\n  </label>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen" ',  (next_gen) ? "checked" : '' ,' />\n    <small>next gen</small>\n  </label>\n</td>\n<td>\n  <input type="number" name="years_for_next_gen" class="form-control" ',  (years_for_next_gen) ? 'checked' : '' ,' />\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen_presidents_club" ',  (next_gen_presidents_club) ? 'checked' : '' ,' />\n    <small>President\'s</small>\n  </label>\n</td>\n<td>\n  <a href="/profiles/',  id ,'" class="btn btn-xs btn-primary">View</a>\n</td>\n<td>\n  <a href="/profiles/',  id ,'/edit" class="btn btn-xs btn-warning">Edit</a>\n</td>\n');}return __p.join('');};
 }).call(this);
 Profiles.Models['Profile'] = Backbone.Model.extend({
   collection: Profiles.Collections['Profiles']
@@ -17046,22 +17046,56 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   events: {
     'input input': 'edit',
     'change input, select': 'update',
+    'dblclick .photo': 'updatePhoto',
+  },
+  updatePhoto: function(event){
+    let input = $('<input type="file" name="photo" class="form-control" />');
+    $(input).insertAfter(event.target);
   },
   edit: function(event){
     $(event.target).addClass('editing');
     // this.$el.addClass('editing');
   },
   update: function(event){
+    const t = this;
     const targ = $(event.target);
     const name = targ.prop('name');
     let attrs = {};
     if(targ.prop('type') === 'checkbox'){
       attrs[name] = targ.prop('checked');
+    } else if(targ.prop('type') === 'file'){
+      t.uploadPhoto(targ[0]).then(function(){
+        t.model.fetch().then(function(){
+          t.render();
+        });
+      });
     } else {
       attrs[name] = targ.val();
     }
     this.model.set(attrs);
+
     this.save(targ);
+  },
+  uploadPhoto: function(field){
+    const t = this;
+    return new Promise(function(resolve, reject){
+      let formData = new FormData();
+      let file = field.files[0];
+      c(file);
+      formData.append('profile[photo]', file);
+
+      $.ajax({
+        url: t.model.url() + '.js',
+        data: formData,
+        cache: false,
+        contentType: false,
+        method: 'PUT',
+        processData: false,
+        success: function(){
+          resolve();
+        }
+      });
+    });
   },
   save: function(input){
     const t = this;
@@ -17084,7 +17118,6 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     'change .filter': 'filter'
   },
   filter: function(event){
-    this.filters = {};
     // Filters based on any value in all filters.
     let filters = this.$el.find('.filter');
     let filter_array = {};
@@ -17106,11 +17139,13 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     let headers = this.$el.find('th');
     $(headers).each(function(i, header){
       let h = $(header);
-      let name = h.data('filter-for');
-      if(name){
-        let input = $('<input type="text" class="form-control filter" />');
-        input.prop('name', name);
-        h.append(input);
+      if(h.find('.filter').length === 0){
+        let name = h.data('filter-for');
+        if(name){
+          let input = $('<input type="text" class="form-control filter" />');
+          input.prop('name', name);
+          h.append(input);
+        }
       }
     });
   },
