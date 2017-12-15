@@ -30,10 +30,7 @@ class Profile < ApplicationRecord
   def update_photo_path
     # Based on member_id
     if member_id_changed?
-      puts '.................'
-      puts photo.inspect
-      puts '.................'
-      # photo.recreate_versions! if photo
+      photo.recreate_versions! if photo
     end
   end
 end
