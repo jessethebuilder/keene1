@@ -49,10 +49,19 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
     unless model.member_id.blank?
-      "#{model.member_id}_#{original_filename}"
+      unless original_filename.blank?
+        name = "#{model.member_id}---#{original_filename}"
+      else
+        p = model.attributes['photo']
+        p =~ /(.+---)?(.+)?/
+        p = $2 if $1
+        name = "#{model.member_id}---#{p}"
+      end
     else
-      original_filename
+      name = original_filename
     end
+
+    return name
   end
 
 end
