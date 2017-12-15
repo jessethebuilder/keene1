@@ -17102,12 +17102,11 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
     this.model.save().then(function(){
       if(input.prop('name') === 'member_id'){
         t.model.fetch().then(function(){
-          t.render();
-          t.$el.find('[name=first_name]').select();
+          t.$el.find('.photo').text(t.model.get('photo'));
         });
-      } else {
-        input.removeClass('editing');
       }
+      
+      input.removeClass('editing');
     });
   },
   render: function(){
