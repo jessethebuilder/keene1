@@ -62,7 +62,14 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   save: function(input){
     const t = this;
     this.model.save().then(function(){
-      input.removeClass('editing');
+      if(input.prop('name') === 'member_id'){
+        t.model.fetch().then(function(){
+          t.render();
+          t.$el.find('[name=first_name]').select();
+        });
+      } else {
+        input.removeClass('editing');
+      }
     });
   },
   render: function(){
