@@ -1,0 +1,75 @@
+<td>
+  <input type="text" name="member_id" value="<%= member_id %>" class="form-control" />
+</td>
+<td>
+  <input type="text" name="first_name" value="<%= first_name %>"class="form-control" />
+</td>
+<td>
+  <input type="text" name="last_name" value="<%= last_name %>"class="form-control" />
+</td>
+<td>
+  <select name="suffix" class="form-control">
+    <option value=""></option>
+    <%
+      let opts = ['Sr', 'Jr', 'III', 'IV'];
+      for(let i = 0; i < opts.length; i++){
+        let selected = (opts[i] == suffix) ? 'selected' : '';
+        %>
+          <option value="<%= opts[i] %>" <%= selected %>><%= opts[i] %></options>
+        <%
+      }
+    %>
+  </select>
+</td>
+<td>
+  <input type="text" name="display_name" value="<%= display_name %>" class="form-control" />
+</td>
+<td>
+  <select name="state" class="form-control">
+    <%
+      let states = {"AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado", "CT": "Connecticut", "DC": "Washington DC", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas", "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT":  "Montana", "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma", "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington", "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming"}
+
+      for(s in states){
+        let selected = (s === state) ? ' selected' : '';
+        %>
+          <option value="<%= s %>"<%= selected %>><%= states[s] %></option>
+        <%
+      }
+    %>
+  </select>
+</td>
+<td>
+  <input type="number" name="years_of_membership" value="<%= years_of_membership %>" class="form-control" />
+</td>
+<td>
+  <span class="photo">
+    <%= photo %>
+  </span>
+</td>
+<td>
+  <label>
+    <input type="checkbox" name="in_memoriam" <%= (in_memoriam) ? 'checked' : '' %> />
+    <small>memoriam</small>
+  </label>
+</td>
+<td>
+  <label>
+    <input type="checkbox" name="next_gen" <%= (next_gen) ? "checked" : '' %> />
+    <small>next gen</small>
+  </label>
+</td>
+<td>
+  <input type="number" name="years_for_next_gen" class="form-control" <%= (years_for_next_gen) ? 'checked' : '' %> />
+</td>
+<td>
+  <label>
+    <input type="checkbox" name="next_gen_presidents_club" <%= (next_gen_presidents_club) ? 'checked' : '' %> />
+    <small>president's</small>
+  </label>
+</td>
+<td>
+  <a href="/profiles/<%= id %>" class="btn btn-xs btn-primary">View</a>
+</td>
+<td>
+  <a href="/profiles/<%= id %>/edit" class="btn btn-xs btn-warning">Edit</a>
+</td>

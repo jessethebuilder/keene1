@@ -29,6 +29,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'backbone-on-rails'
+gem 'ejs'
+
 gem 'farm_shed', '0.0.2', :git => 'https://github.com/jessethebuilder/farm_shed'
 gem 'geocoder'
 

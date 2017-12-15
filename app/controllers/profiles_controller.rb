@@ -10,6 +10,7 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       format.html
       format.csv{ send_data @profiles.to_csv, filename: "NADA100-Profiles-#{Time.now.to_s}.csv" }
+      format.json
     end
   end
 
@@ -81,7 +82,7 @@ class ProfilesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :suffix,
+      params.require(:profile).permit(:first_name, :last_name, :suffix, :member_id,
                                       :display_name, :state, :years_of_membership, :in_memoriam,
                                       :next_gen, :years_for_next_gen, :next_gen_presidents_club,
                                       :photo, :remote_photo_url, :photo_cache)
