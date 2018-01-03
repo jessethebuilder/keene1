@@ -17003,8 +17003,6 @@ window.Profiles = {
   Routers: {},
   init: function(profile_data) {
     const profiles = new Profiles.Collections['Profiles'](profile_data);
-    // const v = new Profiles.Views['ProfilesView']({collection: profiles});
-    // v.render();
 
     profiles.fetch().then(function(){
       const v = new Profiles.Views['ProfilesView']({collection: profiles});
@@ -17027,7 +17025,7 @@ window.Profiles = {
           let selected = (s === state) ? ' selected' : '';
           ; __p.push('\n          <option value="',  s ,'"',  selected ,'>',  states[s] ,'</option>\n        '); 
         }
-      ; __p.push('\n  </select>\n</td>\n<td>\n  <input type="number" name="years_of_membership" value="',  years_of_membership ,'" class="form-control" />\n</td>\n<td>\n  <span class="photo">\n    ');  if(photo){ ; __p.push('\n      ',  photo ,'\n    ');  } else { ; __p.push('\n      click to add photo\n    ');  } ; __p.push('\n  </span>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="in_memoriam" ',  (in_memoriam) ? 'checked' : '' ,' />\n    <small>memoriam</small>\n  </label>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen" ',  (next_gen) ? "checked" : '' ,' />\n    <small>next gen</small>\n  </label>\n</td>\n<td>\n  <input type="number" name="years_for_next_gen" class="form-control" ',  (years_for_next_gen) ? 'checked' : '' ,' />\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen_presidents_club" ',  (next_gen_presidents_club) ? 'checked' : '' ,' />\n    <small>President\'s</small>\n  </label>\n</td>\n<td>\n  <a href="/profiles/',  id ,'" class="btn btn-xs btn-primary">View</a>\n</td>\n<td>\n  <a href="/profiles/',  id ,'/edit" class="btn btn-xs btn-warning">Edit</a>\n</td>\n');}return __p.join('');};
+      ; __p.push('\n  </select>\n</td>\n<td>\n  <input type="number" name="years_of_membership" value="',  years_of_membership ,'" class="form-control" />\n</td>\n<td>\n  <span class="photo">\n    ');  if(photo){ ; __p.push('\n      ',  photo ,'\n    ');  } else { ; __p.push('\n      click to add photo\n    ');  } ; __p.push('\n  </span>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="in_memoriam" ',  (in_memoriam) ? 'checked' : '' ,' />\n    <small>memoriam</small>\n  </label>\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen" ',  (next_gen) ? "checked" : '' ,' />\n    <small>next gen</small>\n  </label>\n</td>\n<td>\n  <input type="number" name="years_for_next_gen" class="form-control" ',  (years_for_next_gen) ? 'checked' : '' ,' />\n</td>\n<td>\n  <label>\n    <input type="checkbox" name="next_gen_presidents_club" ',  (next_gen_presidents_club) ? 'checked' : '' ,' />\n    <small>President\'s</small>\n  </label>\n</td>\n<td>\n  <a href="/profiles/',  id ,'" class="btn btn-xs btn-primary">View</a>\n</td>\n<td>\n  <a href="/profiles/',  id ,'/edit" class="btn btn-xs btn-warning">Edit</a>\n</td>\n<td>\n  <input type="submit" name="delete" value="Delete" class="btn btn-danger btn-xs" />\n');}return __p.join('');};
 }).call(this);
 Profiles.Models['Profile'] = Backbone.Model.extend({
   collection: Profiles.Collections['Profiles']
@@ -17041,12 +17039,18 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   template: JST['profile/profile_view'],
   tagName: 'tr',
   initialize: function(){
-    // this.listenTo(this.model, 'change', this.save);
+    this.listenTo(this.model, 'destroy', this.remove);
   },
   events: {
     'input input': 'edit',
     'change input, select': 'update',
     'dblclick .photo': 'updatePhoto',
+    'click [name=delete]' : 'deleteModel'
+  },
+  deleteModel: function(){
+    if(confirm("Are you sure? This is permanent!")){
+      this.model.destroy();
+    }
   },
   updatePhoto: function(event){
     let input = $('<input type="file" name="photo" class="form-control" />');
@@ -17054,7 +17058,6 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   },
   edit: function(event){
     $(event.target).addClass('editing');
-    // this.$el.addClass('editing');
   },
   update: function(event){
     const t = this;
@@ -17105,7 +17108,7 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
           t.$el.find('.photo').text(t.model.get('photo'));
         });
       }
-      
+
       input.removeClass('editing');
     });
   },
