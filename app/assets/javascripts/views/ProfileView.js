@@ -3,12 +3,18 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   template: JST['profile/profile_view'],
   tagName: 'tr',
   initialize: function(){
-    // this.listenTo(this.model, 'change', this.save);
+    this.listenTo(this.model, 'destroy', this.remove);
   },
   events: {
     'input input': 'edit',
     'change input, select': 'update',
     'dblclick .photo': 'updatePhoto',
+    'click [name=delete]' : 'deleteModel'
+  },
+  deleteModel: function(){
+    if(confirm("Are you sure? This is permanent!")){
+      this.model.destroy();
+    }
   },
   updatePhoto: function(event){
     let input = $('<input type="file" name="photo" class="form-control" />');
@@ -16,7 +22,6 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   },
   edit: function(event){
     $(event.target).addClass('editing');
-    // this.$el.addClass('editing');
   },
   update: function(event){
     const t = this;
@@ -67,7 +72,7 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
           t.$el.find('.photo').text(t.model.get('photo'));
         });
       }
-      
+
       input.removeClass('editing');
     });
   },
