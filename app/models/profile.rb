@@ -25,8 +25,6 @@ class Profile < ApplicationRecord
 
   before_save :update_photo_path
 
-  attr_accessor :x
-
   private
 
   def update_photo_path
