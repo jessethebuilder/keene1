@@ -1,6 +1,7 @@
 require 'csv'
 require "#{Rails.root}/lib/assets/s3_helper"
 require 'open-uri'
+require 'rest-client'
 
 class Profile < ApplicationRecord
   include S3Helper
@@ -24,6 +25,23 @@ class Profile < ApplicationRecord
   end
 
   before_save :update_photo_path
+
+  def Profile.temp
+    count = 0
+    Profile.all.reverse.each do |p|
+      unless p.photo.blank?
+        begin
+          RestClient.get(p.photo.url(:thumb))
+        rescue RestClient::Forbidden => rest_error
+          p.remove_photo!
+          p.save
+          count += 1
+        end
+      end
+    end
+
+    puts count
+  end
 
   private
 
