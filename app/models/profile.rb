@@ -6,6 +6,10 @@ require 'rest-client'
 class Profile < ApplicationRecord
   include S3Helper
 
+  # validates :order, uniqueness: true, allow_nil: true
+  scope :unordered, -> { where(order: nil) }
+  scope :ordered, -> { where.not(order: nil).order(order: :asc) }
+
   mount_uploader :photo, PhotoUploader, dependent: :destroy
 
   def photo_url

@@ -4,21 +4,60 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   tagName: 'tr',
   initialize: function(){
     this.listenTo(this.model, 'destroy', this.remove);
+    // this.listenTo(this.model, '')
   },
   events: {
     'input input': 'edit',
     'change input, select': 'update',
-    'dblclick .photo': 'updatePhoto',
-    'click [name=delete]' : 'deleteModel'
+    'click .photo': 'editPhoto',
+    'click [name=delete]' : 'deleteModel',
+    // 'input .photo [name=photo]' : 'updatePhoto'
+    'keyup [name=send_to_page]' : 'sendToPage'
+  },
+  sendToPage: function(e){
+    if(e.keyCode === 13){
+      this.model.set({send_to_page: $(e.target).val()});
+      this.remove();
+    }
   },
   deleteModel: function(){
     if(confirm("Are you sure? This is permanent!")){
       this.model.destroy();
     }
   },
-  updatePhoto: function(event){
-    let input = $('<input type="file" name="photo" class="form-control" />');
-    $(input).insertAfter(event.target);
+  updatePhoto: function(e){
+  },
+  editPhoto: function(event){
+    const t = this;
+    let photo_box = this.$el.find('.photo');
+    let photo = this.$el.find('img');
+
+    if(this.$el.find('[type=file][name=photo]').length === 0){
+      // Unless this already exists
+      let input = $('<input type="file" name="photo" class="form-control" />');
+      $(input).insertAfter(event.target);
+      input.trigger('click'); // Open dialog
+
+      document.body.onfocus = function(){
+        if(!this.changing_photo){
+          // Unless a photo has been selected, detach. Otherwise, this is re-rendered after new photo upload
+          input.detach(); // Remove input on cancel
+        }
+      }
+
+      input.change(function(){
+        this.changing_photo = true; // Mark as changing, so no detach
+
+        photo.hide(); // Hide content of cell
+        photo_box.find('button').hide();
+
+        let gif = $('<img>');
+        gif.attr('src', '/utilities/ajax-loader.gif');
+        // photo_box.append('uplaoding ');
+        gif.css('marginLeft', '12px').css('marginTop', '4px');
+        photo_box.append(gif);
+      });
+    }
   },
   edit: function(event){
     $(event.target).addClass('editing');
@@ -27,6 +66,9 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
     const t = this;
     const targ = $(event.target);
     const name = targ.prop('name');
+
+    if(name === 'send_to_page'){ return; } // send_to_page does not get set.
+
     let attrs = {};
     if(targ.prop('type') === 'checkbox'){
       attrs[name] = targ.prop('checked');
@@ -40,15 +82,16 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
       attrs[name] = targ.val();
     }
     this.model.set(attrs);
-
     this.save(targ);
+  },
+  updatePage: function(){
+
   },
   uploadPhoto: function(field){
     const t = this;
     return new Promise(function(resolve, reject){
       let formData = new FormData();
       let file = field.files[0];
-      c(file);
       formData.append('profile[photo]', file);
 
       $.ajax({
@@ -78,6 +121,7 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   },
   render: function(){
     this.$el.html(this.template(this.model.toJSON()));
+    this.$el.attr('data-id', this.model.get('id'));
     return this;
   }
 });

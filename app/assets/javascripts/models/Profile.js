@@ -1,3 +1,4 @@
 Profiles.Models['Profile'] = Backbone.Model.extend({
-  collection: Profiles.Collections['Profiles']
+  collection: Profiles.Collections['Profiles'],
+  urlRoot: '/profiles'
 });

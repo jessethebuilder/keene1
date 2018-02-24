@@ -27,5 +27,25 @@
 
   .photo{
     font-size: 8px;
+    position: relative;
+
+    img{
+      cursor: pointer;
+    }
+
+    input[name=photo]{
+      display: none;
+      position: absolute;
+      top: -8px;
+      left: -5px;
+      width: 240px;
+      background-color: #222;
+    }
+  }
+
+  .sort_handle{
+    span.glyphicon{
+      padding-top: 3px;
+    }
   }
 }

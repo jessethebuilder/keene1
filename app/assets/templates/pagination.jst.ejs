@@ -1,0 +1,16 @@
+<%
+  let pages = (collection_count / per_page);
+  if(collection_count % per_page > 0){ pages += 1; }
+
+  for(let i = 0; i < pages - 1; i++){
+    let klass;
+    if(page == i + 1){
+      klass = 'page-item active';
+    } else {
+      klass = 'page-item';
+    }
+%>
+  <li class="<%= klass %>">
+    <a class="page-link" href="#page_<%= i + 1 %>"><%= i + 1 %></a>
+  </li>
+<% } %>

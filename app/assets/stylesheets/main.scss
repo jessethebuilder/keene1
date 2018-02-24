@@ -3,6 +3,13 @@ $brand-danger: #910000;
 @import 'bootstrap';
 @import 'profiles';
 
+//--- Globals ----------------------------------------------------
+.sort_handle{
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+//--- Parts ------------------------------------------------------
 #top_nav{
   margin-bottom:0px;
   border-radius: 0px;
@@ -40,5 +47,13 @@ $brand-danger: #910000;
   .alert{
     background-color: rgba(red, 1);
     color: white;
+  }
+}
+
+.pagination_wrapper{
+  text-align: center;
+  a{
+    color: #333;
+    font-weight: 800;
   }
 }

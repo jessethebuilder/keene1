@@ -5,7 +5,12 @@ class ProfilesController < ApplicationController
   # GET /profiles
   # GET /profiles.json
   def index
-    @profiles = Profile.all.order(:state).order(:last_name)
+    @profiles = Profile.unordered
+    @profiles = @profiles.to_a
+
+    Profile.ordered.order(updated_at: :asc).each do |p|
+      @profiles.insert(p.order, p)
+    end
 
     respond_to do |format|
       format.html
@@ -86,6 +91,7 @@ class ProfilesController < ApplicationController
       params.require(:profile).permit(:first_name, :last_name, :suffix, :member_id,
                                       :display_name, :state, :years_of_membership, :in_memoriam,
                                       :next_gen, :years_for_next_gen, :next_gen_presidents_club,
-                                      :photo, :remote_photo_url, :photo_cache)
+                                      :photo, :remote_photo_url, :photo_cache,
+                                      :order)
     end
 end

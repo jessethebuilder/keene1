@@ -44,9 +44,9 @@
 <td>
   <span class="photo">
     <% if(photo){ %>
-      <%= photo %>
+      <img src="<%= photo_thumb %>" style="width:40px;" />
     <% } else { %>
-      dbl click to add
+      <button class="btn btn-info btn-xs">Add</button>
     <% } %>
   </span>
 </td>
@@ -70,6 +70,14 @@
     <input type="checkbox" name="next_gen_presidents_club" <%= (next_gen_presidents_club) ? 'checked' : '' %> />
     <small>President's</small>
   </label>
+</td>
+<td>
+  <input type="number" name="send_to_page" class="form-control" placeholder="page" />
+</td>
+<td>
+  <div class="sort_handle">
+    <span class="glyphicon glyphicon-align-justify"></span>
+  </div>
 </td>
 <td>
   <a href="/profiles/<%= id %>" class="btn btn-xs btn-primary">View</a>

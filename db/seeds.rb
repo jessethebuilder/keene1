@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+1000.times do
+  p = Profile.new(member_id: Random.rand(10000..99999), first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name, display_name: Faker::Name.name)
+  p.save!
+end

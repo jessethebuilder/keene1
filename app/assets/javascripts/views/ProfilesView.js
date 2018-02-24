@@ -3,9 +3,32 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
   el: '#profiles',
   initialize: function(){
     this.filters = {};
+    this.page = this.attributes['page'] || 1;
+    this.per_page = this.attributes['per_page'] || 100;
+
+    // this.on('change', this.sendToPage)
+    this.listenTo(this.collection, 'change:send_to_page', this.sendToPage);
+  },
+  sendToPage: function(model){
+    const t = this;
+    let order = (model.get('send_to_page') - 1) * 100
+    model.set({order: order});
+    model.save().then(function(){
+      t.collection.fetch().then(function(){
+        if(model.get('send_to_page') == t.page){
+          t.renderList(); // If this is the same page, render
+        }
+      });
+    });
   },
   events: {
-    'change .filter': 'filter'
+    'change .filter': 'filter',
+    'click .pagination .page-link' : 'changePage'
+  },
+  changePage: function(event){
+    event.preventDefault();
+    this.page = $(event.target).text();
+    this.renderList();
   },
   filter: function(event){
     // Filters based on any value in all filters.
@@ -21,8 +44,10 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     this.renderList();
   },
   render: function(){
+    this.list = this.$el.find('#profile_list');
     this.renderFilters();
     this.renderList();
+    this.initSortable();
     return this;
   },
   renderFilters: function(){
@@ -40,11 +65,12 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     });
   },
   renderList: function(){
+    let models = this.filterList();
+    this.renderPage(models);
+  },
+  filterList(){
     const t = this;
-
-    t.list = this.$el.find('#profile_list');
-    t.list.empty();
-
+    let arr = [];
     this.collection.each(function(model){
       let pass = true;
 
@@ -56,10 +82,75 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
         }
       }
 
-      if(pass){
-        let v = new Profiles.Views['ProfileView']({model: model});
-        t.list.append(v.render().$el);
+      if(pass){ arr.push(model); }
+    });
+
+    return arr;
+  },
+  renderPage(models){
+    this.list.empty();
+
+    const t = this;
+    let first_page = (this.page - 1) * 100;
+    let last_page = first_page + 99;
+
+    let models_slice = models.slice(first_page, last_page + 1);
+
+    $(models_slice).each(function(){
+      let v = new Profiles.Views['ProfileView']({model: this});
+      t.list.append(v.render().$el);
+    });
+
+    this.initPagination();
+  },
+  initSortable: function(){
+    const t = this;
+    $(this.list).sortable({
+      handlle: '.sort_handle',
+      axis: 'y',
+      stop: function(event, ui){
+        let targ = $(ui.item).closest('tr');
+        let profile = t.collection.findWhere({id: targ.data('id')});
+        profile.set({order: 'slug'});
+        t.reorderPage();
       }
+    })
+  },
+  reorderPage: function(){
+    // Reorder entire page, but only if model has order. Otherwise, ignore.
+    const t = this;
+    let profiles_to_save = [];
+
+    t.list.find('tr').each(function(i){
+      // Iterate each row and extract the id from data-id. Check if order exists,
+      // if so, update and then save as a batch like below.
+      let id = $(this).data('id');
+      let profile = t.collection.findWhere({id: id});
+      if(profile.get('order')){ // if order is defined
+        c(profile.get('order'));
+        let order = i + ((t.page - 1) * 100);
+        profile.set({order: order});
+        profiles_to_save.push(profile);
+      }
+    });
+
+    Promise.all(profiles_to_save.map(function(p){ return p.save() })).then(function(){
+      t.collection.fetch();
+    });
+
+    // c(this.collection.url);
+    // this.collection.save().then(function(){
+    //   c('done');
+    // });
+  },
+  initPagination: function(){
+    // Event handling for pagination is on this View.
+    const t = this;
+    $('.pagination_wrapper').each(function(){
+      let v = new Profiles.Views['PaginationView']({attributes: {collection_count: t.collection.length,
+                                                                 per_page: t.per_page,
+                                                                 page: t.page}});
+      $(this).html(v.render().$el);
     });
   }
 });

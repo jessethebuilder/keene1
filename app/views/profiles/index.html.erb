@@ -11,6 +11,8 @@
 
 <div class="container-fluid">
   <div id="profiles">
+    <div class="pagination_wrapper"></div>
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -26,6 +28,7 @@
           <th data-filter-for="next_gen">Next Gen</th>
           <th data-filter-for="years_for_next_gen">Year for Next</th>
           <th data-filter-for="next_gen_presidents_club">President's</th>
+          <th>Send to</th>
           <th></th>
           <th></th>
           <th></th>
@@ -39,11 +42,17 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="pagination_wrapper"></div>
+
   </div>
 </div>
 
 <script type="text/javascript">
+  let loc = window.location;
+  // c(loc);
   $(document).on('turbolinks:load', function(){
-    Profiles.init();
+    Profiles.init(<%== render template: 'profiles/index.json' %>);
+    // Profiles.init();
   });
 </script>
