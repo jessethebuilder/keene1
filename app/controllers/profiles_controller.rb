@@ -5,7 +5,7 @@ class ProfilesController < ApplicationController
   # GET /profiles
   # GET /profiles.json
   def index
-    @profiles = Profile.unordered
+    @profiles = Profile.unordered.order(:state)
     @profiles = @profiles.to_a
 
     Profile.ordered.order(updated_at: :asc).each do |p|
@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv{ send_data @profiles.to_csv, filename: "NADA100-Profiles-#{Time.now.to_s}.csv" }
+      format.csv{ send_data Profile.to_csv(@profiles), filename: "NADA100-Profiles-#{Time.now.to_s}.csv" }
       format.json
     end
   end

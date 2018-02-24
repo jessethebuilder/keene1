@@ -10,16 +10,26 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     this.listenTo(this.collection, 'change:send_to_page', this.sendToPage);
   },
   sendToPage: function(model){
+    // Triggered after send to page is updated on model
     const t = this;
-    let order = (model.get('send_to_page') - 1) * 100
-    model.set({order: order});
-    model.save().then(function(){
-      t.collection.fetch().then(function(){
-        if(model.get('send_to_page') == t.page){
-          t.renderList(); // If this is the same page, render
-        }
+
+    if(model.get('send_to_page') != ''){
+      // If this is a value, set, and save. Re-render page if you're on same one
+      let order = (model.get('send_to_page') - 1) * 100
+      model.set({order: order});
+      model.save().then(function(){
+        t.collection.fetch().then(function(){
+          if(model.get('send_to_page') == t.page){
+            t.renderList(); // If this is the same page, render
+          }
+        });
       });
-    });
+    } else {
+      model.set({order: null});
+      model.save().then(function(){
+        t.renderList();
+      });
+    }
   },
   events: {
     'change .filter': 'filter',
@@ -101,7 +111,7 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
       t.list.append(v.render().$el);
     });
 
-    this.initPagination();
+    this.initPagination(models);
   },
   initSortable: function(){
     const t = this;
@@ -126,8 +136,7 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
       // if so, update and then save as a batch like below.
       let id = $(this).data('id');
       let profile = t.collection.findWhere({id: id});
-      if(profile.get('order')){ // if order is defined
-        c(profile.get('order'));
+      if(profile.get('order') != null){ // if order is defined
         let order = i + ((t.page - 1) * 100);
         profile.set({order: order});
         profiles_to_save.push(profile);
@@ -143,11 +152,11 @@ Profiles.Views['ProfilesView'] = Backbone.View.extend({
     //   c('done');
     // });
   },
-  initPagination: function(){
+  initPagination: function(models){
     // Event handling for pagination is on this View.
     const t = this;
     $('.pagination_wrapper').each(function(){
-      let v = new Profiles.Views['PaginationView']({attributes: {collection_count: t.collection.length,
+      let v = new Profiles.Views['PaginationView']({attributes: {collection_count: models.length,
                                                                  per_page: t.per_page,
                                                                  page: t.page}});
       $(this).html(v.render().$el);

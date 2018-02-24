@@ -5,6 +5,7 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   initialize: function(){
     this.listenTo(this.model, 'destroy', this.remove);
     // this.listenTo(this.model, '')
+    this.listenTo(this.model, 'change:order', this.render);
   },
   events: {
     'input input': 'edit',
@@ -84,9 +85,6 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
     this.model.set(attrs);
     this.save(targ);
   },
-  updatePage: function(){
-
-  },
   uploadPhoto: function(field){
     const t = this;
     return new Promise(function(resolve, reject){
@@ -122,6 +120,9 @@ Profiles.Views['ProfileView'] = Backbone.View.extend({
   render: function(){
     this.$el.html(this.template(this.model.toJSON()));
     this.$el.attr('data-id', this.model.get('id'));
+    if(this.model.get('order') != null){
+      this.$el.addClass('ordered');
+    }
     return this;
   }
 });
